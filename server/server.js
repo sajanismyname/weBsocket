@@ -57,7 +57,12 @@ wss.on("connection", (socket) => {
 
         broadcast({
             type: "broadcast",
+
+            username: message.username,
+
             message: message.message,
+
+            timestamp: new Date().toISOString(),
         });
 
     });

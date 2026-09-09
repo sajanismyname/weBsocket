@@ -2,6 +2,7 @@ const socket = new WebSocket("ws://localhost:8080");
 
 const status = document.getElementById("status");
 const messageInput = document.getElementById("messageInput");
+const usernameInput = document.getElementById("usernameInput");
 const sendButton = document.getElementById("sendButton");
 const messages = document.getElementById("messages");
 const userCount = document.getElementById("userCount");
@@ -38,11 +39,17 @@ socket.onmessage = (event) => {
 
     }
 
+
     else if (data.type === "broadcast") {
 
-        addMessage(data.message);
+        const time = new Date(data.timestamp);
+
+        addMessage(
+            `${data.username}: ${data.message} - ${time.toLocaleTimeString()}`
+        );
 
     }
+
 
     else if (data.type === "user_count") {
 
@@ -50,6 +57,7 @@ socket.onmessage = (event) => {
             `Connected users: ${data.count}`;
 
     }
+
 };
 
 
@@ -72,17 +80,22 @@ socket.onclose = () => {
 sendButton.addEventListener("click", () => {
 
     const message = messageInput.value.trim();
+    const username = usernameInput.value.trim();
 
-    if (!message) return;
+
+    if (!message || !username) return;
 
 
     socket.send(
         JSON.stringify({
             type: "message",
+            username: username,
             message: message,
         })
     );
 
 
+    // Clear only the message
     messageInput.value = "";
+
 });
