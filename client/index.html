@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Sockets</title>
+
+    <script src="client.js" defer></script>
+</head>
+<body>
+        <h1>WebSocket Demo</h1>
+
+    <p>
+        Status:
+        <strong id="status">Connecting...</strong>
+    </p>
+
+    <p>
+        <strong id="userCount">Connected users: 0</strong>
+    </p>
+
+    <input
+        id="messageInput"
+        type="text"
+        placeholder="Enter your message"
+    />
+
+    <button id="sendButton">
+        Send
+    </button>
+
+    <h2>Messages</h2>
+
+    <ul id="messages"></ul>
+</body>
+</html>
