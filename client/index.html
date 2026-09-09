@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -39,4 +39,53 @@
 
     <ul id="messages"></ul>
 </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Socket.IO Events</title>
+</head>
+
+<body>
+
+    <h1>Socket.IO Events</h1>
+
+    <p>
+        Status:
+        <span id="status">Connecting...</span>
+    </p>
+
+    <p id="socketId"></p>
+
+    <input
+        id="usernameInput"
+        type="text"
+        placeholder="Enter username"
+    >
+
+    <input
+        id="messageInput"
+        type="text"
+        placeholder="Enter message"
+    >
+
+    <button id="sendButton">
+        Send Message
+    </button>
+
+    <h3>Messages</h3>
+
+    <ul id="messages"></ul>
+
+
+    <!-- Socket.IO client -->
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+    <script src="client.js"></script>
+
+</body>
+
 </html>
