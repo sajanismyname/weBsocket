@@ -1,86 +1,19 @@
-import { WebSocketServer } from "ws";
+import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
-const wss = new WebSocketServer({
-    port: 8080,
-});
+const app = express();
 
-console.log("WebSocket server running on ws://localhost:8080");
+const httpServer = createServer(app);
 
+const io = new Server(httpServer);
 
-function broadcast(message) {
-
-    wss.clients.forEach((client) => {
-
-        if (client.readyState === 1) {
-            client.send(JSON.stringify(message));
-        }
-
-    });
-}
-
-
-function broadcastUserCount() {
-
-    const count = wss.clients.size;
-
-    console.log(`Connected users: ${count}`);
-
-    broadcast({
-        type: "user_count",
-        count: count,
-    });
-}
-
-
-wss.on("connection", (socket) => {
+io.on("connection", (socket) => {
 
     console.log("A client connected");
 
+});
 
-    socket.send(
-        JSON.stringify({
-            type: "welcome",
-            message: "Welcome to websocket server",
-        })
-    );
-
-
-    broadcastUserCount();
-
-
-    socket.on("message", (data) => {
-
-        const message = JSON.parse(data.toString());
-
-        console.log("Message from client:", message);
-
-
-        broadcast({
-            type: "broadcast",
-
-            username: message.username,
-
-            message: message.message,
-
-            timestamp: new Date().toISOString(),
-        });
-
-    });
-
-
-    socket.on("close", () => {
-
-        console.log("Client disconnected");
-
-        broadcastUserCount();
-
-    });
-
-
-    socket.on("error", (error) => {
-
-        console.error("WebSocket error:", error);
-
-    });
-
+httpServer.listen(8080, () => {
+    console.log("Server running on http://localhost:8080");
 });
