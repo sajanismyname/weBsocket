@@ -100,24 +100,141 @@
 
 // });
 
+// const socket = io("http://localhost:8080");
+
+
+// const status = document.getElementById("status");
+// const socketId = document.getElementById("socketId");
+
+// const usernameInput =
+//     document.getElementById("usernameInput");
+
+// const messageInput =
+//     document.getElementById("messageInput");
+
+// const sendButton =
+//     document.getElementById("sendButton");
+
+// const messages =
+//     document.getElementById("messages");
+
+
+
+// function addMessage(message) {
+
+//     const li = document.createElement("li");
+
+//     li.textContent = message;
+
+//     messages.appendChild(li);
+// }
+
+
+
+// // Connection
+// socket.on("connect", () => {
+
+//     status.textContent = "Connected";
+
+//     socketId.textContent =
+//         `Socket ID: ${socket.id}`;
+
+//     console.log(
+//         "Connected:",
+//         socket.id
+//     );
+
+// });
+
+
+
+// // 1. Message sent ONLY to this client
+// socket.on("personal", (message) => {
+
+//     addMessage(
+//         `PERSONAL: ${message}`
+//     );
+
+// });
+
+
+
+// // 2. Message sent to EVERYONE
+// socket.on("everyone", (data) => {
+
+//     addMessage(
+//         `EVERYONE → ${data.username}: ${data.message}`
+//     );
+
+// });
+
+
+
+// // 3. Message sent to EVERYONE except sender
+// socket.on("others", (data) => {
+
+//     addMessage(
+//         `OTHERS → ${data.username}: ${data.message}`
+//     );
+
+// });
+
+
+
+// // Send message
+// sendButton.addEventListener("click", () => {
+
+//     const username =
+//         usernameInput.value.trim();
+
+//     const message =
+//         messageInput.value.trim();
+
+
+//     if (!username || !message) {
+//         return;
+//     }
+
+
+//     socket.emit("message", {
+
+//         username: username,
+
+//         message: message
+
+//     });
+
+
+//     messageInput.value = "";
+
+// });
+
+
+
+// // Disconnect
+// socket.on("disconnect", () => {
+
+//     status.textContent = "Disconnected";
+
+// });
+
+
 const socket = io("http://localhost:8080");
 
+const messages =
+    document.getElementById("messages");
 
-const status = document.getElementById("status");
-const socketId = document.getElementById("socketId");
+const mySocketId =
+    document.getElementById("mySocketId");
 
-const usernameInput =
-    document.getElementById("usernameInput");
+const receiverInput =
+    document.getElementById("receiverInput");
 
 const messageInput =
     document.getElementById("messageInput");
 
 const sendButton =
     document.getElementById("sendButton");
-
-const messages =
-    document.getElementById("messages");
-
 
 
 function addMessage(message) {
@@ -127,78 +244,47 @@ function addMessage(message) {
     li.textContent = message;
 
     messages.appendChild(li);
+
 }
 
 
+// Get my socket ID
+socket.on("mySocketId", (id) => {
 
-// Connection
-socket.on("connect", () => {
-
-    status.textContent = "Connected";
-
-    socketId.textContent =
-        `Socket ID: ${socket.id}`;
-
-    console.log(
-        "Connected:",
-        socket.id
-    );
+    mySocketId.textContent =
+        `My Socket ID: ${id}`;
 
 });
 
 
-
-// 1. Message sent ONLY to this client
-socket.on("personal", (message) => {
+// Receive private message
+socket.on("privateMessage", (data) => {
 
     addMessage(
-        `PERSONAL: ${message}`
+        `Private message: ${data.message}`
     );
 
 });
 
 
-
-// 2. Message sent to EVERYONE
-socket.on("everyone", (data) => {
-
-    addMessage(
-        `EVERYONE → ${data.username}: ${data.message}`
-    );
-
-});
-
-
-
-// 3. Message sent to EVERYONE except sender
-socket.on("others", (data) => {
-
-    addMessage(
-        `OTHERS → ${data.username}: ${data.message}`
-    );
-
-});
-
-
-
-// Send message
+// Send private message
 sendButton.addEventListener("click", () => {
 
-    const username =
-        usernameInput.value.trim();
+    const receiverId =
+        receiverInput.value.trim();
 
     const message =
         messageInput.value.trim();
 
 
-    if (!username || !message) {
+    if (!receiverId || !message) {
         return;
     }
 
 
-    socket.emit("message", {
+    socket.emit("privateMessage", {
 
-        username: username,
+        receiverId: receiverId,
 
         message: message
 
@@ -206,14 +292,5 @@ sendButton.addEventListener("click", () => {
 
 
     messageInput.value = "";
-
-});
-
-
-
-// Disconnect
-socket.on("disconnect", () => {
-
-    status.textContent = "Disconnected";
 
 });

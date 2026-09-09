@@ -1,87 +1,42 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Sockets</title>
-
-    <script src="client.js" defer></script>
-</head>
-<body>
-        <h1>WebSocket Demo</h1>
-
-    <p>
-        Status:
-        <strong id="status">Connecting...</strong>
-    </p>
-
-    <p>
-        <strong id="userCount">Connected users: 0</strong>
-    </p>
-
-    <input
-        id="usernameInput"
-        type="text"
-        placeholder="Enter your username"
-    />
-
-    <input
-        id="messageInput"
-        type="text"
-        placeholder="Enter your message"
-    />
-
-    <button id="sendButton">
-        Send
-    </button>
-
-    <h2>Messages</h2>
-
-    <ul id="messages"></ul>
-</body>
-</html> -->
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Socket.IO Events</title>
+    <title>Socket.IO Private Messaging</title>
+    <link rel="icon" href="favicon.ico">
 </head>
 
 <body>
 
-    <h1>Socket.IO Events</h1>
+    <h1>Private Messaging</h1>
 
-    <p>
-        Status:
-        <span id="status">Connecting...</span>
+    <p id="mySocketId">
+        My Socket ID: Connecting...
     </p>
 
-    <p id="socketId"></p>
 
     <input
-        id="usernameInput"
+        id="receiverInput"
         type="text"
-        placeholder="Enter username"
+        placeholder="Receiver socket ID"
     >
 
     <input
         id="messageInput"
         type="text"
-        placeholder="Enter message"
+        placeholder="Message"
     >
 
     <button id="sendButton">
-        Send Message
+        Send Private Message
     </button>
+
 
     <h3>Messages</h3>
 
     <ul id="messages"></ul>
 
 
-    <!-- Socket.IO client -->
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 
     <script src="client.js"></script>
