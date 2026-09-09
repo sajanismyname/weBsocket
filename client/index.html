@@ -1,42 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Sockets</title>
-
-    <script src="client.js" defer></script>
+    <title>Socket.IO Private Messaging</title>
+    <link rel="icon" href="favicon.ico">
 </head>
+
 <body>
-        <h1>WebSocket Demo</h1>
 
-    <p>
-        Status:
-        <strong id="status">Connecting...</strong>
+    <h1>Private Messaging</h1>
+
+    <p id="mySocketId">
+        My Socket ID: Connecting...
     </p>
 
-    <p>
-        <strong id="userCount">Connected users: 0</strong>
-    </p>
 
     <input
-        id="usernameInput"
+        id="receiverInput"
         type="text"
-        placeholder="Enter your username"
-    />
+        placeholder="Receiver socket ID"
+    >
 
     <input
         id="messageInput"
         type="text"
-        placeholder="Enter your message"
-    />
+        placeholder="Message"
+    >
 
     <button id="sendButton">
-        Send
+        Send Private Message
     </button>
 
-    <h2>Messages</h2>
+
+    <h3>Messages</h3>
 
     <ul id="messages"></ul>
+
+
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+    <script src="client.js"></script>
+
 </body>
+
 </html>
