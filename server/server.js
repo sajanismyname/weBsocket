@@ -160,29 +160,41 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket) => {
 
-    console.log(
-        "Client connected:",
-        socket.id
-    );
+    console.log("Client connected:", socket.id);
 
 
-    // Send socket ID to the client
-    socket.emit("mySocketId", socket.id);
+    // JOIN ROOM
+    socket.on("joinRoom", (room) => {
 
-
-    // Private message
-    socket.on("privateMessage", (data) => {
+        socket.join(room);
 
         console.log(
-            "Private message:",
+            `${socket.id} joined ${room}`
+        );
+
+
+        // Notify everyone in the room
+        io.to(room).emit(
+            "roomMessage",
+            `${socket.id} joined ${room}`
+        );
+
+    });
+
+
+    // ROOM MESSAGE
+    socket.on("roomMessage", (data) => {
+
+        console.log(
+            "Room message:",
             data
         );
 
 
-        io.to(data.receiverId).emit(
-            "privateMessage",
+        io.to(data.room).emit(
+            "roomMessage",
             {
-                senderId: socket.id,
+                username: data.username,
                 message: data.message
             }
         );
@@ -190,7 +202,19 @@ io.on("connection", (socket) => {
     });
 
 
-    // Disconnect
+    // LEAVE ROOM
+    socket.on("leaveRoom", (room) => {
+
+        socket.leave(room);
+
+        console.log(
+            `${socket.id} left ${room}`
+        );
+
+    });
+
+
+    // DISCONNECT
     socket.on("disconnect", () => {
 
         console.log(
@@ -201,6 +225,7 @@ io.on("connection", (socket) => {
     });
 
 });
+
 
 
 httpServer.listen(8080, () => {

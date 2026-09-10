@@ -2,24 +2,64 @@
 <html>
 
 <head>
-    <title>Socket.IO Private Messaging</title>
-    <link rel="icon" href="favicon.ico">
+
+    <meta charset="UTF-8">
+
+    <title>Socket.IO Rooms</title>
+
 </head>
+
 
 <body>
 
-    <h1>Private Messaging</h1>
+    <h1>Socket.IO Rooms</h1>
 
-    <p id="mySocketId">
-        My Socket ID: Connecting...
+
+    <p id="status">
+        Connecting...
     </p>
 
 
+    <p id="socketId">
+        Socket ID:
+    </p>
+
+
+    <hr>
+
+
+    <h3>Join Room</h3>
+
+
     <input
-        id="receiverInput"
+        id="usernameInput"
         type="text"
-        placeholder="Receiver socket ID"
+        placeholder="Username"
     >
+
+
+    <input
+        id="roomInput"
+        type="text"
+        placeholder="Room name"
+    >
+
+
+    <button id="joinButton">
+        Join Room
+    </button>
+
+
+    <button id="leaveButton">
+        Leave Room
+    </button>
+
+
+    <hr>
+
+
+    <h3>Send Room Message</h3>
+
 
     <input
         id="messageInput"
@@ -27,12 +67,14 @@
         placeholder="Message"
     >
 
+
     <button id="sendButton">
-        Send Private Message
+        Send
     </button>
 
 
     <h3>Messages</h3>
+
 
     <ul id="messages"></ul>
 

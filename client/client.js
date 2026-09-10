@@ -221,76 +221,135 @@
 
 const socket = io("http://localhost:8080");
 
-const messages =
-    document.getElementById("messages");
 
-const mySocketId =
-    document.getElementById("mySocketId");
+const status =
+    document.getElementById("status");
 
-const receiverInput =
-    document.getElementById("receiverInput");
+const socketId =
+    document.getElementById("socketId");
+
+const usernameInput =
+    document.getElementById("usernameInput");
+
+const roomInput =
+    document.getElementById("roomInput");
 
 const messageInput =
     document.getElementById("messageInput");
 
+const joinButton =
+    document.getElementById("joinButton");
+
+const leaveButton =
+    document.getElementById("leaveButton");
+
 const sendButton =
     document.getElementById("sendButton");
 
-
-function addMessage(message) {
-
-    const li = document.createElement("li");
-
-    li.textContent = message;
-
-    messages.appendChild(li);
-
-}
+const messages =
+    document.getElementById("messages");
 
 
-// Get my socket ID
-socket.on("mySocketId", (id) => {
+let currentRoom = "";
 
-    mySocketId.textContent =
-        `My Socket ID: ${id}`;
+
+// Connection
+socket.on("connect", () => {
+
+    status.textContent = "Connected";
+
+    socketId.textContent =
+        `Socket ID: ${socket.id}`;
 
 });
 
 
-// Receive private message
-socket.on("privateMessage", (data) => {
+// Join room
+joinButton.addEventListener("click", () => {
 
-    addMessage(
-        `Private message: ${data.message}`
+    const room =
+        roomInput.value.trim();
+
+    if (!room) return;
+
+
+    currentRoom = room;
+
+
+    socket.emit(
+        "joinRoom",
+        room
     );
 
 });
 
 
-// Send private message
+// Room message received
+socket.on("roomMessage", (data) => {
+
+    const li =
+        document.createElement("li");
+
+
+    if (typeof data === "string") {
+
+        li.textContent = data;
+
+    } else {
+
+        li.textContent =
+            `${data.username}: ${data.message}`;
+
+    }
+
+
+    messages.appendChild(li);
+
+});
+
+
+// Send message
 sendButton.addEventListener("click", () => {
 
-    const receiverId =
-        receiverInput.value.trim();
+    const username =
+        usernameInput.value.trim();
 
     const message =
         messageInput.value.trim();
 
 
-    if (!receiverId || !message) {
+    if (!username || !message || !currentRoom) {
         return;
     }
 
 
-    socket.emit("privateMessage", {
-
-        receiverId: receiverId,
-
-        message: message
-
-    });
+    socket.emit(
+        "roomMessage",
+        {
+            room: currentRoom,
+            username: username,
+            message: message
+        }
+    );
 
 
     messageInput.value = "";
+
+});
+
+
+// Leave room
+leaveButton.addEventListener("click", () => {
+
+    if (!currentRoom) return;
+
+
+    socket.emit(
+        "leaveRoom",
+        currentRoom
+    );
+
+
+    currentRoom = "";
 
 });
